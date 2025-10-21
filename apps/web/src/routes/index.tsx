@@ -1,39 +1,20 @@
-import { createFileRoute } from '@tanstack/react-router'
-import logo from '../logo.svg'
+import { createFileRoute } from "@tanstack/react-router";
+import { TaskCard } from "../../components/ui/TaskCard";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   component: App,
-})
+});
 
 function App() {
   return (
-    <div className="text-center">
-      <header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)]">
-        <img
-          src={logo}
-          className="h-[40vmin] pointer-events-none animate-[spin_20s_linear_infinite]"
-          alt="logo"
-        />
-        <p>
-          Edit <code>src/routes/index.tsx</code> and save to reload.
-        </p>
-        <a
-          className="text-[#61dafb] hover:underline"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <a
-          className="text-[#61dafb] hover:underline"
-          href="https://tanstack.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn TanStack
-        </a>
-      </header>
+    <div className="flex overflow-hidden h-full mt-10">
+      <TaskCard
+        priority="urgent"
+        dueDate="2023-01-01"
+        title="Task 1"
+        users={["User 1", "User 2"]}
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lorem sapien, porttitor vitae ultrices a, vestibulum a ligula. Quisque blandit massa at nisl consectetur venenatis vel id ipsum. Integer ac consequat diam. Mauris tortor tellus, ornare sed arcu vitae, feugiat suscipit neque. Aliquam volutpat nisi vel nibh sagittis semper"
+      />
     </div>
-  )
+  );
 }
