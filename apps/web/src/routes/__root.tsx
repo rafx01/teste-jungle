@@ -5,7 +5,7 @@ import { Header } from "../../components/Header";
 
 export const Route = createRootRoute({
   component: () => (
-    <div className="bg-slate-400">
+    <div className="h-full">
       <Header />
       <div className="px-60">
         <Outlet />

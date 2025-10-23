@@ -9,7 +9,7 @@ import {
 
 export function Header() {
   return (
-    <header className="flex items-center justify-center h-full w-full bg-[#7ae01a]">
+    <header className="flex items-center justify-center h-20 w-full bg-[#7ae01a]">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
