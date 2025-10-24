@@ -15,7 +15,6 @@ import { Task } from './entities/task.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      //entities: [__dirname + 'dist/**/*.entity{.ts,.js}'],
       entities: [Task],
       migrations: [__dirname + 'dist/migrations/*{.ts,.js}'],
       synchronize: true,

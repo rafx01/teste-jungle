@@ -1,25 +1,30 @@
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+import { BaseAvatar } from "./ui/Avatar";
+import { BaseDropdown } from "./ui/BaseDropdown";
+import { BaseInput } from "./ui/BaseInput";
 
 export function Header() {
   return (
-    <header className="flex items-center justify-center h-20 w-full bg-[#7ae01a]">
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <NavigationMenuLink>Link</NavigationMenuLink>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
+    <header className="flex px-10 h-20 w-full bg-[#7ae01a]">
+      <div className="flex flex-row w-full justify-between items-center ">
+        <div className="space-x-2  flex-row flex">
+          <BaseInput placeholder="Buscar" className="w-96 bg-white" />
+          <BaseDropdown
+            trigger={<p className="text-xs">Itens por página</p>}
+            items={[
+              { label: "10", onClick: () => {} },
+              { label: "15", onClick: () => {} },
+            ]}
+          />
+          <BaseDropdown
+            trigger={<p className="text-xs">Ordenar por</p>}
+            items={[
+              { label: "10", onClick: () => {} },
+              { label: "15", onClick: () => {} },
+            ]}
+          />
+        </div>
+        <BaseAvatar />
+      </div>
     </header>
   );
 }
