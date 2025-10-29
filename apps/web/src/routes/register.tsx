@@ -7,12 +7,16 @@ import { BaseButton } from "../../components/ui/BaseButton";
 import { registerSchema } from "../../schemas/registerSchema";
 import { FaArrowLeft } from "react-icons/fa";
 import { usePostRegister } from "@/hooks/auth/usePostRegister";
+import { useState } from "react";
+import { Bounce, toast } from "react-toastify";
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
 });
 
 function RegisterPage() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -22,24 +26,58 @@ function RegisterPage() {
     defaultValues: {
       email: "",
       password: "",
+      name: "",
+      nick: "",
     },
   });
 
-  const PostRegister = usePostRegister();
+  const postRegister = usePostRegister();
 
   const navigate = useNavigate();
 
-  async function handleLogin(data: Zod.infer<typeof registerSchema>) {
+  async function handleRegister(data: Zod.infer<typeof registerSchema>) {
     try {
-      PostRegister.mutateAsync({
+      setIsLoading(true);
+      console.log(1);
+
+      const response = await postRegister.mutateAsync({
         email: data.email,
         password: data.password,
         name: data.name,
         nick: data.nick,
       });
+      console.log(response);
 
-      navigate({ to: "/homepage" });
-    } catch (error) {}
+      navigate({ to: "/" });
+      console.log(3);
+
+      setIsLoading(false);
+      console.log(4);
+
+      toast.success("Usuário cadastrado com sucesso!", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } catch (error) {
+      toast.error("Falha ao cadastrar usuário!", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   }
 
   return (
@@ -70,6 +108,32 @@ function RegisterPage() {
 
         <Controller
           control={control}
+          name="name"
+          render={({ field }) => (
+            <BaseInput
+              error={errors.name?.message}
+              {...field}
+              placeholder="Nome completo"
+              type="text"
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="nick"
+          render={({ field }) => (
+            <BaseInput
+              error={errors.nick?.message}
+              {...field}
+              placeholder="Apelido"
+              type="text"
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
           name="password"
           render={({ field }) => (
             <BaseInput
@@ -94,8 +158,9 @@ function RegisterPage() {
           )}
         />
         <BaseButton
-          onClick={handleSubmit(handleLogin)}
+          onClick={handleSubmit(handleRegister)}
           type="submit"
+          loading={isLoading}
           title="Cadastrar"
           className="w-full bg-[#7ae01a] hover:bg-[#9fe65d]"
         />

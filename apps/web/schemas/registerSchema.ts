@@ -9,14 +9,34 @@ export const registerSchema = z
       })
       .trim()
       .email("O campo precisa ser preenchido com um email"),
-    password: z
+    nick: z
       .string({
         required_error: "Campo obrigatório",
         invalid_type_error: "O campo precisa ser do tipo texto",
       })
       .min(1, "Campo obrigatório")
       .trim(),
-    confirmPassword: z.string().min(1, "Campo obrigatório").trim(),
+    name: z
+      .string({
+        required_error: "Campo obrigatório",
+        invalid_type_error: "O campo precisa ser do tipo texto",
+      })
+      .min(1, "Campo obrigatório")
+      .trim(),
+    password: z
+      .string({
+        required_error: "Campo obrigatório",
+        invalid_type_error: "O campo precisa ser do tipo texto",
+      })
+      .min(6, "Campo obrigatório")
+      .trim(),
+    confirmPassword: z
+      .string({
+        required_error: "Campo obrigatório",
+        invalid_type_error: "O campo precisa ser do tipo texto",
+      })
+      .min(6, "Campo obrigatório")
+      .trim(),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {

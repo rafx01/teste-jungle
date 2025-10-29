@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import type { ReactNode } from "react";
+import { Loading } from "./Loading";
 
 type BaseButtonProps = {
   loading?: boolean;
@@ -18,15 +19,14 @@ export function BaseButton({
   ...props
 }: BaseButtonProps) {
   return (
-    <div className="flex flex-wrap items-center gap-2 md:flex-row">
-      <Button
-        variant="default"
-        disabled={disabled}
-        onClick={onClick}
-        {...props}
-      >
-        {title}
-      </Button>
-    </div>
+    <Button
+      variant="default"
+      disabled={disabled || loading}
+      onClick={onClick}
+      {...props}
+    >
+      {title}
+      {loading && <Loading />}
+    </Button>
   );
 }

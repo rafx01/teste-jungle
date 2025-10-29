@@ -9,7 +9,7 @@ export class TasksController {
 
   @Get()
   getAllTasks(@Res() response, @Query() query: SearchFilterDto) {
-    return response.status(200).json(this.tasksService.getAllTasks());
+    return response.status(200).json(this.tasksService.getAllTasks(query));
   }
 
   @Post()

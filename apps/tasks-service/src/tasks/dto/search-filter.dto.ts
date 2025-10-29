@@ -1,11 +1,23 @@
-import { IsOptional, Min } from 'class-validator';
+import { IsOptional, IsInt, Min, IsIn } from 'class-validator';
+import { Type } from 'class-transformer';
+
 export class SearchFilterDto {
   @IsOptional()
-  page?: number;
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  page?: number = 1;
 
-  @Min(1, {
-    message: 'Limit must be at least 1',
-  })
   @IsOptional()
-  limit?: number;
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  limit?: number = 10;
+
+  @IsOptional()
+  @IsIn(['ASC', 'DESC'])
+  order?: 'ASC' | 'DESC' = 'DESC';
+
+  @IsOptional()
+  orderBy?: string = 'createdAt';
 }
