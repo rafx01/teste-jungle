@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shadcn/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,7 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/shadcn/ui/dropdown-menu";
 import type { ReactNode } from "react";
 
 interface DropdownItem {

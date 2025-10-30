@@ -5,8 +5,8 @@ import { BaseInput } from "./ui/BaseInput/BaseInput";
 export function Header() {
   return (
     <header className="flex px-10 h-20 w-full bg-[#7ae01a]">
-      <div className="flex flex-row w-full justify-between items-center ">
-        <div className="space-x-2  flex-row flex">
+      <div className=" w-full items-center flex justify-end ">
+        {/* <div className="space-x-2  flex-row flex">
           <BaseInput placeholder="Buscar" className="w-96 bg-white" />
           <BaseDropdown
             trigger={<p className="text-xs">Itens por página</p>}
@@ -22,7 +22,7 @@ export function Header() {
               { label: "15", onClick: () => {} },
             ]}
           />
-        </div>
+        </div> */}
         <BaseAvatar />
       </div>
     </header>

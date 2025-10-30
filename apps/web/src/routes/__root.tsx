@@ -1,11 +1,13 @@
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
+import { ToastContainer } from "react-toastify";
 
 export const Route = createRootRoute({
   component: () => (
     <>
       <Outlet />
+      <ToastContainer />
       {/* <TanStackDevtools
         config={{
           position: "bottom-right",

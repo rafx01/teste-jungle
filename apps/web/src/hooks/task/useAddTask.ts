@@ -21,8 +21,10 @@ export function usePostAddTask() {
       title,
       users,
     }: props) => {
+      console.log(users);
+
       const { data } = await axios.post(
-        `${import.meta.env.VITE_AUTH_API_BASEURL}/auth/login`,
+        `${import.meta.env.VITE_TASKS_API_BASEURL}/api/tasks`,
         {
           description,
           dueDate,

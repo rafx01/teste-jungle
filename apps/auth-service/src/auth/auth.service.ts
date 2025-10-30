@@ -24,8 +24,6 @@ export class AuthService {
   }
 
   async register(email: string, password: string, name: string, nick: string) {
-    console.log('back aqui', email, password, nick, name);
-
     const user = await this.usersService.create(email, password, name, nick);
     const { password: _, ...userWithoutPassword } = user;
     return this.login(userWithoutPassword);

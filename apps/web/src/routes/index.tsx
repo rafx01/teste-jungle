@@ -1,13 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { BaseInput } from "../../components/ui/BaseInput/BaseInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import * as Zod from "zod";
-import { loginSchema } from "../../schemas/loginSchema";
-import { BaseButton } from "../../components/ui/BaseButton/BaseButton";
+import { loginSchema } from "../schemas/loginSchema";
 import { usePostLogin } from "@/hooks/auth/usePostLogin";
 import { useState } from "react";
 import { Bounce, toast } from "react-toastify";
+import { BaseInput } from "@/components/ui/BaseInput/BaseInput";
+import { BaseButton } from "@/components/ui/BaseButton/BaseButton";
 
 export const Route = createFileRoute("/")({
   component: LoginPage,
@@ -37,31 +37,17 @@ function LoginPage() {
       setIsLoading(true);
       console.log(1);
 
-      // const response = await postLogin.mutateAsync({
-      //   email: data.email,
-      //   password: data.password,
-      // });
-      // console.log(response);
+      const response = await postLogin.mutateAsync({
+        email: data.email,
+        password: data.password,
+      });
+      console.log(response);
 
       navigate({ to: "/homepage" });
-      console.log(3);
 
       setIsLoading(false);
-      console.log(4);
-
-      toast.success("Usuário cadastrado com sucesso!", {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
     } catch (error) {
-      toast.error("Falha ao cadastrar usuário!", {
+      toast.error("Credenciais inválidas!", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -72,6 +58,7 @@ function LoginPage() {
         theme: "light",
         transition: Bounce,
       });
+      setIsLoading(false);
     }
   }
 

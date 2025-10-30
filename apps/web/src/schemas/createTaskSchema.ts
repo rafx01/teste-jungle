@@ -15,7 +15,8 @@ export const createTaskSchema = z.object({
     })
     .min(1, "Campo obrigatório")
     .trim(),
-  priority: z.enum(["low", "medium", "high", "urgent"]),
+  priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
   dueDate: z.string({}),
-  assignedUsers: z.array(z.string()),
+  users: z.array(z.string()),
+  status: z.enum(["TODO", "IN_PROGRESS", "REVIEW", "DONE"]),
 });

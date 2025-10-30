@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shadcn/ui/button";
 import type { ReactNode } from "react";
 import { Loading } from "../Loading/Loading";
 

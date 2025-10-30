@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shadcn/ui/avatar";
 import { BaseDropdown } from "../BaseDropdown/BaseDropdown";
 
 export function BaseAvatar({ onClick }: { onClick?: () => void }) {

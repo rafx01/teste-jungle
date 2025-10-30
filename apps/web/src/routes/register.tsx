@@ -1,14 +1,14 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { BaseInput } from "../../components/ui/BaseInput/BaseInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import * as Zod from "zod";
-import { BaseButton } from "../../components/ui/BaseButton";
-import { registerSchema } from "../../schemas/registerSchema";
+import { registerSchema } from "../schemas/registerSchema";
 import { FaArrowLeft } from "react-icons/fa";
 import { usePostRegister } from "@/hooks/auth/usePostRegister";
 import { useState } from "react";
 import { Bounce, toast } from "react-toastify";
+import { BaseInput } from "@/components/ui/BaseInput/BaseInput";
+import { BaseButton } from "@/components/ui/BaseButton/BaseButton";
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
@@ -38,22 +38,17 @@ function RegisterPage() {
   async function handleRegister(data: Zod.infer<typeof registerSchema>) {
     try {
       setIsLoading(true);
-      console.log(1);
 
-      const response = await postRegister.mutateAsync({
+      await postRegister.mutateAsync({
         email: data.email,
         password: data.password,
         name: data.name,
         nick: data.nick,
       });
-      console.log(response);
 
       navigate({ to: "/" });
-      console.log(3);
 
       setIsLoading(false);
-      console.log(4);
-
       toast.success("Usuário cadastrado com sucesso!", {
         position: "bottom-right",
         autoClose: 5000,
