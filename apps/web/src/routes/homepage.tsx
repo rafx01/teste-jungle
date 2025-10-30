@@ -1,14 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Header } from "../../components/Header";
-import { mockTasks } from "../../constants";
-import { TaskCard } from "../../components/ui/TaskCard";
+import { TaskCard } from "../../components/ui/TaskCard/TaskCard";
 import { useGetAllTasks } from "@/hooks/task/useGetAllTasks";
-import { AddTaskModal } from "../../components/ui/AddTaskModal";
+import { AddTaskModal } from "../../components/ui/AddTaskModal/AddTaskModal";
+import { SkeletonCard } from "../../components/ui/SkeletonCard/SkeletonCard";
 
 export const Route = createFileRoute("/homepage")({
   component: HomePage,
 });
+
+type TaskProps = {
+  title: string;
+  dueDate: Date;
+  priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
+  description: string;
+};
 
 function FloatingButton({ onClick }: { onClick: () => void }) {
   return (
@@ -27,23 +34,38 @@ function HomePage() {
 
   const getAllTasks = useGetAllTasks();
 
+  let alo = true;
+
   return (
     <div className="min-h-screen w-full">
       <Header />
 
       <AddTaskModal open={isModalOpen} onOpenChange={setIsModalOpen} />
 
-      <div className="pt-10 justify-center flex flex-wrap gap-10">
-        {mockTasks.map(({ description, dueDate, priority, title, users }) => (
-          <TaskCard
-            key={title}
-            description={description}
-            dueDate={dueDate}
-            priority={priority}
-            title={title}
-            users={users}
-          />
-        ))}
+      <div className="px-10">
+        {getAllTasks.isLoading || getAllTasks.isFetching ? (
+          <div className="pt-10 flex flex-wrap gap-10">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
+          </div>
+        ) : (
+          <div className="pt-10  flex flex-wrap gap-10">
+            {getAllTasks?.data?.map(
+              ({ title, dueDate, priority, description }: TaskProps) => (
+                <TaskCard
+                  key={title}
+                  description={description}
+                  dueDate={dueDate}
+                  priority={priority}
+                  title={title}
+                  users={[]}
+                  //users={users}
+                />
+              )
+            )}
+          </div>
+        )}
       </div>
 
       <FloatingButton onClick={() => setIsModalOpen(true)} />

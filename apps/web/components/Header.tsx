@@ -1,6 +1,6 @@
-import { BaseAvatar } from "./ui/Avatar";
-import { BaseDropdown } from "./ui/BaseDropdown";
-import { BaseInput } from "./ui/BaseInput";
+import { BaseAvatar } from "./ui/Avatar/Avatar";
+import { BaseDropdown } from "./ui/BaseDropdown/BaseDropdown";
+import { BaseInput } from "./ui/BaseInput/BaseInput";
 
 export function Header() {
   return (

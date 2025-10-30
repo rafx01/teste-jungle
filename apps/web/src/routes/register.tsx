@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { BaseInput } from "../../components/ui/BaseInput";
+import { BaseInput } from "../../components/ui/BaseInput/BaseInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import * as Zod from "zod";

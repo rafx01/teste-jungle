@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BaseInput } from "../BaseInput/BaseInput";
+import { BaseTextArea } from "../BaseTextArea/BaseTextArea";
 
 type AddTaskModalProps = {
   open: boolean;
@@ -38,21 +40,22 @@ export function AddTaskModal({ open, onOpenChange }: AddTaskModalProps) {
           <div className="grid gap-4 py-4">
             <div className="grid gap-3">
               <Label htmlFor="title">Título</Label>
-              <Input
+              <BaseInput
+                id="title"
+                name="title"
+                placeholder="Digite o título da tarefa"
+              />
+              {/* <Input
                 id="title"
                 name="title"
                 placeholder="Digite o título da tarefa"
                 required
-              />
+              /> */}
             </div>
 
             <div className="grid gap-3">
               <Label htmlFor="description">Descrição</Label>
-              <Input
-                id="description"
-                name="description"
-                placeholder="Digite a descrição"
-              />
+              <BaseTextArea error="" placeholder="Digite a descrição aqui" />
             </div>
 
             <div className="grid gap-3">
@@ -65,6 +68,20 @@ export function AddTaskModal({ open, onOpenChange }: AddTaskModalProps) {
               <select
                 id="priority"
                 name="priority"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              >
+                <option value="low">Baixa</option>
+                <option value="medium">Média</option>
+                <option value="high">Alta</option>
+                <option value="urgent">Urgente</option>
+              </select>
+            </div>
+
+            <div className="grid gap-3">
+              <Label htmlFor="users">Usuários </Label>
+              <select
+                id="users"
+                name="users"
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               >
                 <option value="low">Baixa</option>

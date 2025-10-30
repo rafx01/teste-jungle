@@ -20,17 +20,9 @@ export function useGetAllTasks(params: GetAllTasksParams = {}) {
     queryKey: ["getAllTasks", page, limit, order, orderBy],
     queryFn: async () => {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_AUTH_API_BASEURL}/api/tasks?page=${page}&limit=${limit}&order=${order}&orderBy=${orderBy}`,
-        {
-          params: {
-            page,
-            limit,
-            order,
-            orderBy,
-          },
-        }
+        `${import.meta.env.VITE_TASKS_API_BASEURL}/api/tasks?page=${page}&limit=${limit}&order=${order}&orderBy=${orderBy}`
       );
-      return data;
+      return data.data;
     },
   });
 }

@@ -8,8 +8,8 @@ import {
 type props = {
   title: string;
   description: string;
-  priority: "low" | "medium" | "high" | "urgent";
-  dueDate: string;
+  priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
+  dueDate: Date | string;
   users: string[];
   onClick?: () => void;
   status?: string;
@@ -25,17 +25,18 @@ export function TaskCard({
   dueDate,
 }: props) {
   let priorityIcon: ReactNode = "";
+
   switch (priority) {
-    case "low":
+    case "LOW":
       priorityIcon = <FcLowPriority size={26} />;
       break;
-    case "medium":
+    case "MEDIUM":
       priorityIcon = <FcMediumPriority size={26} />;
       break;
-    case "high":
+    case "HIGH":
       priorityIcon = <FcHighPriority size={26} />;
       break;
-    case "urgent":
+    case "URGENT":
       priorityIcon = (
         <div className="flex flex-row gap-1">
           <FcHighPriority size={26} />
@@ -72,7 +73,7 @@ export function TaskCard({
       <div className="flex flex-row justify-between">
         <div>{priorityIcon}</div>
         <div>
-          <p>{dueDate}</p>
+          <p>{dueDate.toLocaleString("pt-BR")}</p>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BaseDropdown } from "./BaseDropdown";
+import { BaseDropdown } from "../BaseDropdown/BaseDropdown";
 
 export function BaseAvatar({ onClick }: { onClick?: () => void }) {
   return (

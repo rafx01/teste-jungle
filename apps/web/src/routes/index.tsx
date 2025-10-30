@@ -1,10 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { BaseInput } from "../../components/ui/BaseInput";
+import { BaseInput } from "../../components/ui/BaseInput/BaseInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import * as Zod from "zod";
 import { loginSchema } from "../../schemas/loginSchema";
-import { BaseButton } from "../../components/ui/BaseButton";
+import { BaseButton } from "../../components/ui/BaseButton/BaseButton";
 import { usePostLogin } from "@/hooks/auth/usePostLogin";
 import { useState } from "react";
 import { Bounce, toast } from "react-toastify";

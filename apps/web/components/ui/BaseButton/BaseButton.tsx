@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import type { ReactNode } from "react";
-import { Loading } from "./Loading";
+import { Loading } from "../Loading/Loading";
 
 type BaseButtonProps = {
   loading?: boolean;
