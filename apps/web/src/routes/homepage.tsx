@@ -9,19 +9,11 @@ import { SkeletonCard } from "@/components/ui/SkeletonCard/SkeletonCard";
 import { TaskCard } from "@/components/ui/TaskCard/TaskCard";
 import { useTaskStore } from "@/stores/taskStore";
 import { TaskModal } from "@/components/ui/TaskModal/TaskModal";
+import type { TaskProps } from "@/types/task";
 
 export const Route = createFileRoute("/homepage")({
   component: HomePage,
 });
-
-type TaskProps = {
-  title: string;
-  dueDate: Date;
-  priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
-  description: string;
-  status: "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE";
-  users: string[];
-};
 
 function FloatingButton({ onClick }: { onClick: () => void }) {
   return (
@@ -38,9 +30,9 @@ function FloatingButton({ onClick }: { onClick: () => void }) {
 function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { openTaskModal } = useTaskStore();
-
   const getAllTasks = useGetAllTasks();
+
+  const { openTaskModal } = useTaskStore();
 
   return (
     <div className="min-h-screen w-full">
@@ -86,14 +78,14 @@ function HomePage() {
             <div className="pt-10  flex flex-wrap gap-10">
               {getAllTasks?.data?.map((task: TaskProps) => (
                 <TaskCard
-                  key={task.title}
+                  key={task.id}
                   description={task.description}
                   dueDate={task.dueDate}
                   priority={task.priority}
                   title={task.title}
                   users={task.users}
                   status={task.status}
-                  onClick={() => openTaskModal(task)}
+                  onClick={() => openTaskModal(task.id)}
                 />
               ))}
             </div>

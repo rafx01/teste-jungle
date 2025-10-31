@@ -41,6 +41,12 @@ export class TasksService {
     };
   }
 
+  async getTaskById(id: string): Promise<Task | null> {
+    const task = await this.taskRepository.findOneBy({ id });
+
+    return task;
+  }
+
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const newTask = this.taskRepository.create(createTaskDto);
     return await this.taskRepository.save(newTask);

@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Res, Param } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { SearchFilterDto } from './dto/search-filter.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { GetTaskByIdDto } from './dto/get-task-by-id.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -10,6 +11,11 @@ export class TasksController {
   @Get()
   async getAllTasks(@Query() query: SearchFilterDto) {
     return await this.tasksService.getAllTasks(query);
+  }
+
+  @Get(':id')
+  async getTask(@Param() params: GetTaskByIdDto) {
+    return await this.tasksService.getTaskById(params.id);
   }
 
   @Post()
