@@ -24,6 +24,9 @@ export class Task {
   @Column({ name: 'title' })
   title: string;
 
+  // @Column({ name: 'users' })
+  // users: string;
+
   @Column({ name: 'description' })
   description: string;
 

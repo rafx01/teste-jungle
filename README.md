@@ -1,135 +1,21 @@
-# Turborepo starter
+    De início, dei várias lidas na documentação do teste no GitHub para absorver bastante o que seria necessário, como implementar, regras de negócio e etc.
+    Feito isso, parti para o excalidraw para "passar a limpo" as ideias, e poder visualizar melhor uns rabiscos de telas, e ter em mente quais componentes eu necessitaria, algumas ideias para arquitetar o back-end e outros.
+    Depois do excalidraw, utilizei o dbdiagram para esquematizar um protótipo de como seria o banco de dados.
+    Iniciando o projeto, utilizei o instalador do turborepo para criar o projeto, e logo após, criei a pasta web e já executei o instalador do TanStack Router. Com o app do front-end criado, já fiz o esboço de alguns componentes com o shadcn, como o header e o componente das tarefas.
+    Uma tecnologia que não possuía muita experiência era o Nest, tendo em mente que utilizei apenas Express nos projetos pessoais e corporativos, e o Nest apenas em nível de curiosidade e estudos. O mesmo foi algo que demandou um certo tempo para eu me adaptar, sabendo que é mais complexo que o Express, com toda a questão do Clean Arch, DTOs etc.
+    Segui a sugestão da documentação do vídeo para realizar a autenticação com o Nest e comunicação RMQ, e, por isso, precisei configurar o RabbitMQ como o broker dos microserviços. Após o back-end do task-services estar mais ou  menos esquematizado, com algumas DTOs, controllers, modules e services funcionando, retornei ao front-end para mudar um pouco os ares, fiz a tela de login e o roteamento para a tela inicial e a tela de perfil do usuário, renderizei as tarefas com dados mockados para fazer os ajustes necessários.
+    Na tela de login fiz a validação do formulário com Zod + React Hook Form, bem como utilizei componentes shadcn.
+    Finalizando (mais ou menos, sempre há coisas a se corrigir), voltei para a task de realizar a autenticação do usuário, no app auth-service, renomeei o controller, module e service do prefixo app para auth, criei a entity do user, instalei tudo que é necessário (bcrypt, passport etc.),
+    Na continuação, fui garantir que todas as rotas básicas do CRUD estavam funcionando, fui corrigindo o que precisava ser corrigido, e fazendo as interfaces necessárias, como modal de confirmação de exclusão de tarefa etc. Contudo percebi que ainda não havia feito os hooks e a lógica do accessToken e RefreshToken, peguei para fazer após terminar o CRUD básico. Parei para ver o vídeo do PhillCode (https://www.youtube.com/watch?v=ccFVOXJnfmo) para entender melhor o assunto.
 
-This Turborepo starter is maintained by the Turborepo core team.
+![alt text](image.png)
 
-## Using this example
+![alt text](image-1.png)
 
-Run the following command:
+no docker compose, as portas das apis (sem ser do gateway) estão expostas
 
-```sh
-npx create-turbo@latest
-```
+para gerar migration:
+npx typeorm-ts-node-commonjs migration:generate ./src/migrations/migrationTwo -d ./src/config/typeorm.config.ts
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+para rodar migration:
+npx typeorm-ts-node-commonjs migration:run -d ./src/config/typeorm.config.ts

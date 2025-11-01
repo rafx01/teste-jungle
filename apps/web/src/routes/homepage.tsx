@@ -10,6 +10,7 @@ import { TaskCard } from "@/components/ui/TaskCard/TaskCard";
 import { useTaskStore } from "@/stores/taskStore";
 import { TaskModal } from "@/components/ui/TaskModal/TaskModal";
 import type { TaskProps } from "@/types/task";
+import { PaginationComponent } from "@/components/ui/Pagination/Pagination";
 
 export const Route = createFileRoute("/homepage")({
   component: HomePage,
@@ -29,8 +30,17 @@ function FloatingButton({ onClick }: { onClick: () => void }) {
 
 function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [order, SetOrder] = useState<"ASC" | "DESC">("DESC");
+  const [itensPerPage, setItensPerPage] = useState(5);
+  const [status, setStatus] = useState<
+    "ALL" | "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE"
+  >("ALL");
 
-  const getAllTasks = useGetAllTasks();
+  const getAllTasks = useGetAllTasks({
+    order: order,
+    limit: itensPerPage,
+    orderByStatus: status,
+  });
 
   const { openTaskModal } = useTaskStore();
 
@@ -46,22 +56,27 @@ function HomePage() {
             <BaseDropdown
               trigger={<p className="text-xs">Itens por página</p>}
               items={[
-                { label: "10", onClick: () => {} },
-                { label: "15", onClick: () => {} },
-              ]}
-            />
-            <BaseDropdown
-              trigger={<p className="text-xs">Ordenar por</p>}
-              items={[
-                { label: "10", onClick: () => {} },
-                { label: "15", onClick: () => {} },
+                { label: "5", onClick: () => setItensPerPage(5) },
+                { label: "10", onClick: () => setItensPerPage(10) },
+                { label: "15", onClick: () => setItensPerPage(15) },
+                { label: "20", onClick: () => setItensPerPage(20) },
               ]}
             />
             <BaseDropdown
               trigger={<p className="text-xs">Status</p>}
               items={[
-                { label: "10", onClick: () => {} },
-                { label: "15", onClick: () => {} },
+                { label: "Todos", onClick: () => {} },
+                { label: "A fazer", onClick: () => setStatus("TODO") },
+                { label: "Em progresso", onClick: () => {} },
+                { label: "Em revisão", onClick: () => {} },
+                { label: "Concluído", onClick: () => {} },
+              ]}
+            />
+            <BaseDropdown
+              trigger={<p className="text-xs">Ordenar por</p>}
+              items={[
+                { label: "Mais recentes", onClick: () => SetOrder("DESC") },
+                { label: "Mais antigas", onClick: () => SetOrder("ASC") },
               ]}
             />
           </div>
@@ -92,6 +107,10 @@ function HomePage() {
           )}
         </div>
       </div>
+      <div className="fixed bottom-0 left-0 w-full bg-white py-3 shadow-md">
+        <PaginationComponent />
+      </div>
+
       <FloatingButton onClick={() => setIsModalOpen(true)} />
     </div>
   );

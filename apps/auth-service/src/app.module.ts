@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { UserEntity } from 'entities/user.entity';
+import { UserEntity } from 'src/entities/user.entity';
 
 @Module({
   imports: [
@@ -18,6 +18,7 @@ import { UserEntity } from 'entities/user.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [UserEntity],
+      migrations: [__dirname + 'dist/migrations/*{.ts,.js}'],
       synchronize: true,
     }),
     AuthModule,

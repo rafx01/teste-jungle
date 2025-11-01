@@ -20,14 +20,14 @@ export class TasksService {
       page = 1,
       limit = 10,
       order = 'DESC',
-      orderBy = 'createdAt',
+      orderByStatus = 'ALL',
     } = filters;
 
     const skip = (page - 1) * limit;
 
     const [tasks, total] = await this.taskRepository.findAndCount({
       order: {
-        [orderBy]: order,
+        [orderByStatus]: order,
       },
       take: limit,
       skip: skip,
@@ -59,17 +59,17 @@ export class TasksService {
     return await this.taskRepository.save(newTask);
   }
 
-  async updateTask(updateTaskDto: UpdateTaskDto, id: string) {
-    this.taskRepository.update(id, updateTaskDto);
+  // async updateTask(updateTaskDto: UpdateTaskDto, id: string) {
+  //   this.taskRepository.update(id, updateTaskDto);
 
-    return await this.taskRepository.save({
-      id,
-      title: updateTaskDto.title,
-      description: updateTaskDto.description,
-      dueDate: updateTaskDto.dueDate,
-      priority: updateTaskDto.priority,
-      status: updateTaskDto.status,
-      users: updateTaskDto.users,
-    });
-  }
+  //   return await this.taskRepository.save({
+  //     id,
+  //     title: updateTaskDto.title,
+  //     description: updateTaskDto.description,
+  //     dueDate: updateTaskDto.dueDate,
+  //     priority: updateTaskDto.priority,
+  //     status: updateTaskDto.status,
+  //     users: updateTaskDto.users,
+  //   });
+  // }
 }

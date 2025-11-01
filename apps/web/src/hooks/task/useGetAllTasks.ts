@@ -5,7 +5,7 @@ interface GetAllTasksParams {
   page?: number;
   limit?: number;
   order?: "ASC" | "DESC";
-  orderBy?: string;
+  orderByStatus?: "ALL" | "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE";
 }
 
 export function useGetAllTasks(params: GetAllTasksParams = {}) {
@@ -13,14 +13,14 @@ export function useGetAllTasks(params: GetAllTasksParams = {}) {
     page = 1,
     limit = 10,
     order = "DESC",
-    orderBy = "createdAt",
+    orderByStatus = "ALL",
   } = params;
 
   return useQuery({
-    queryKey: ["getAllTasks", page, limit, order, orderBy],
+    queryKey: ["getAllTasks", page, limit, order, orderByStatus],
     queryFn: async () => {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_TASKS_API_BASEURL}/api/tasks?page=${page}&limit=${limit}&order=${order}&orderBy=${orderBy}`
+        `${import.meta.env.VITE_TASKS_API_BASEURL}/api/tasks?page=${page}&limit=${limit}&order=${order}&orderByStatus=${orderByStatus}`
       );
       return data.data;
     },

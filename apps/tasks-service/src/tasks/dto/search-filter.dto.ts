@@ -19,5 +19,6 @@ export class SearchFilterDto {
   order?: 'ASC' | 'DESC' = 'DESC';
 
   @IsOptional()
-  orderBy?: string = 'createdAt';
+  @IsIn(['ALL', 'TODO', 'IN_PROGRESS', 'REVIEW', 'DONE'])
+  orderByStatus?: string = 'createdAt';
 }

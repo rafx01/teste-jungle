@@ -11,6 +11,12 @@ import {
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt: Date;
   @Column({ name: 'email' })
   email: string;
   @Column({ name: 'password' })
@@ -19,10 +25,4 @@ export class UserEntity {
   name: string;
   @Column({ name: 'nick' })
   nick: string;
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt: Date;
 }
