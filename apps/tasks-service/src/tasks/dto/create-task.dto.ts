@@ -4,7 +4,6 @@ import {
   IsDateString,
   IsIn,
   IsArray,
-  IsEnum,
 } from 'class-validator';
 
 export class CreateTaskDto {

@@ -1,7 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 type props = {
+  taskId: string | null;
   title: string;
   description: string;
   dueDate: Date;
@@ -10,10 +11,9 @@ type props = {
   users: string[];
 };
 
-export function usePostAddTask() {
-  const queryClient = useQueryClient();
+export function usePutUpdateTaskById() {
   return useMutation({
-    mutationKey: ["addTask"],
+    mutationKey: ["updateTaskById"],
     mutationFn: async ({
       description,
       dueDate,
@@ -21,9 +21,10 @@ export function usePostAddTask() {
       status,
       title,
       users,
+      taskId,
     }: props) => {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_TASKS_API_BASEURL}/api/tasks`,
+      const { data } = await axios.put(
+        `${import.meta.env.VITE_TASKS_API_BASEURL}/api/tasks/${taskId}`,
         {
           description,
           dueDate,
@@ -34,9 +35,6 @@ export function usePostAddTask() {
         }
       );
       return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getAllTasks"] });
     },
   });
 }

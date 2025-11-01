@@ -4,6 +4,9 @@ import { Task } from 'src/entities/task.entity';
 import { Repository } from 'typeorm';
 import { SearchFilterDto } from './dto/search-filter.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { DeleteTaskByIdDto } from './dto/delete-task-by-id.dto';
+import { GetTaskByIdDto } from './dto/get-task-by-id.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 
 @Injectable()
 export class TasksService {
@@ -41,14 +44,32 @@ export class TasksService {
     };
   }
 
-  async getTaskById(id: string): Promise<Task | null> {
-    const task = await this.taskRepository.findOneBy({ id });
+  async getTaskById(getTaskByIdDto: GetTaskByIdDto) {
+    const task = await this.taskRepository.findOneBy({ id: getTaskByIdDto.id });
 
     return task;
+  }
+
+  async deleteTaskById(deleteTaskByIdDto: DeleteTaskByIdDto) {
+    return await this.taskRepository.delete(deleteTaskByIdDto.id);
   }
 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const newTask = this.taskRepository.create(createTaskDto);
     return await this.taskRepository.save(newTask);
+  }
+
+  async updateTask(updateTaskDto: UpdateTaskDto, id: string) {
+    this.taskRepository.update(id, updateTaskDto);
+
+    return await this.taskRepository.save({
+      id,
+      title: updateTaskDto.title,
+      description: updateTaskDto.description,
+      dueDate: updateTaskDto.dueDate,
+      priority: updateTaskDto.priority,
+      status: updateTaskDto.status,
+      users: updateTaskDto.users,
+    });
   }
 }

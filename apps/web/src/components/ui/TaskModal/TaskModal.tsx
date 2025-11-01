@@ -1,5 +1,4 @@
 import { useGetTaskById } from "@/hooks/task/useGetTaskById";
-import { Button } from "@/shadcn/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -13,8 +12,13 @@ import { statusLabel } from "@/utils/statusLabel";
 import { SkeletonCard } from "../SkeletonCard/SkeletonCard";
 import { priorityIcon } from "@/utils/priorityIcon";
 import { FaRegTrashAlt } from "react-icons/fa";
-
+import { AlertModal } from "../AlertModal/AlertModal";
+import { useState } from "react";
+import { BaseTextArea } from "../BaseTextArea/BaseTextArea";
+import { IoIosSend } from "react-icons/io";
 export function TaskModal() {
+  const [open, setOpen] = useState(false);
+
   const { selectedTaskId, isViewModalOpen, closeTaskModal } = useTaskStore();
 
   const getTaskById = useGetTaskById({
@@ -29,6 +33,11 @@ export function TaskModal() {
 
   return (
     <Dialog open={isViewModalOpen} onOpenChange={closeTaskModal}>
+      <AlertModal
+        onOpenChange={closeTaskModal}
+        open={open}
+        taskId={getTaskById?.data?.id}
+      />
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="text-2xl">
@@ -89,11 +98,18 @@ export function TaskModal() {
                     </div>
                   </div>
                 )}
+              <div className="border border-t border-slate-200" />
+              <div className="bg-red-100 w-full h-10">//coments</div>
+              <BaseTextArea placeholder="Escreva seu comentário..." />
+              <div className=" flex justify-end">
+                <div className="h-7 w-7  border cursor-pointer border-slate-300 rounded-sm items-center justify-center flex ">
+                  <IoIosSend />
+                </div>
+              </div>
             </div>
-
             <DialogFooter>
               <div
-                onClick={() => {}}
+                onClick={() => setOpen(true)}
                 className=" w-5 h-5 items-center justify-center flex cursor-pointer"
               >
                 <FaRegTrashAlt color="red" />

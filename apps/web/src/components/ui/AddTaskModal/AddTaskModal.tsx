@@ -58,7 +58,7 @@ export function AddTaskModal({ open, onOpenChange }: AddTaskModalProps) {
         users: data.users,
         status: data.status,
       });
-      toast.success("Atividade cadastrada com sucesso!", {
+      toast.success("tarefa cadastrada com sucesso!", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -72,7 +72,7 @@ export function AddTaskModal({ open, onOpenChange }: AddTaskModalProps) {
       setLoading(false);
       onOpenChange(false);
     } catch (error) {
-      toast.error("Falha ao cadastrar atividade!", {
+      toast.error("Falha ao cadastrar tarefa!", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,

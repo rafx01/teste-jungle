@@ -8,6 +8,7 @@ type BaseButtonProps = {
   onClick?: () => void;
   title: string;
   icon?: ReactNode;
+  variant?: "default" | "destructive" | "outline";
 } & React.ComponentProps<"button">;
 
 export function BaseButton({
@@ -16,11 +17,12 @@ export function BaseButton({
   onClick,
   title,
   icon,
+  variant = "outline",
   ...props
 }: BaseButtonProps) {
   return (
     <Button
-      variant="default"
+      variant={variant}
       disabled={disabled || loading}
       onClick={onClick}
       {...props}
