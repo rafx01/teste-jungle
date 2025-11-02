@@ -11,6 +11,7 @@ import { useTaskStore } from "@/stores/taskStore";
 import { TaskModal } from "@/components/ui/TaskModal/TaskModal";
 import type { TaskProps } from "@/types/task";
 import { PaginationComponent } from "@/components/ui/Pagination/Pagination";
+import { EmptyComponent } from "@/components/ui/Empty";
 
 export const Route = createFileRoute("/homepage")({
   component: HomePage,
@@ -32,6 +33,9 @@ function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [order, SetOrder] = useState<"ASC" | "DESC">("DESC");
   const [itensPerPage, setItensPerPage] = useState(5);
+  const [searchInput, setSearchInput] = useState("");
+  const [page, setPage] = useState(1);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [status, setStatus] = useState<
     "ALL" | "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE"
   >("ALL");
@@ -40,9 +44,21 @@ function HomePage() {
     order: order,
     limit: itensPerPage,
     orderByStatus: status,
+    title: debouncedSearch,
+    page: page,
   });
 
   const { openTaskModal } = useTaskStore();
+
+  const isDataEmpty = getAllTasks.data?.length === 0;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchInput);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   return (
     <div className="min-h-screen w-full">
@@ -52,7 +68,12 @@ function HomePage() {
       <div className="px-10 pt-4">
         <div className=" flex justify-center">
           <div className="space-x-2  flex-row flex">
-            <BaseInput placeholder="Buscar" className="w-96 bg-white" />
+            <BaseInput
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Buscar"
+              className="w-96 bg-white"
+            />
             <BaseDropdown
               trigger={<p className="text-xs">Itens por página</p>}
               items={[
@@ -65,11 +86,14 @@ function HomePage() {
             <BaseDropdown
               trigger={<p className="text-xs">Status</p>}
               items={[
-                { label: "Todos", onClick: () => {} },
+                { label: "Todos", onClick: () => setStatus("ALL") },
                 { label: "A fazer", onClick: () => setStatus("TODO") },
-                { label: "Em progresso", onClick: () => {} },
-                { label: "Em revisão", onClick: () => {} },
-                { label: "Concluído", onClick: () => {} },
+                {
+                  label: "Em progresso",
+                  onClick: () => setStatus("IN_PROGRESS"),
+                },
+                { label: "Em revisão", onClick: () => setStatus("REVIEW") },
+                { label: "Concluído", onClick: () => setStatus("DONE") },
               ]}
             />
             <BaseDropdown
@@ -83,6 +107,8 @@ function HomePage() {
         </div>
 
         <div>
+          {isDataEmpty && <EmptyComponent />}
+
           {getAllTasks.isLoading || getAllTasks.isFetching ? (
             <div className="pt-10 flex flex-wrap gap-10">
               {Array.from({ length: 6 }).map((_, index) => (
@@ -108,7 +134,13 @@ function HomePage() {
         </div>
       </div>
       <div className="fixed bottom-0 left-0 w-full bg-white py-3 shadow-md">
-        <PaginationComponent />
+        {getAllTasks.data?.meta && (
+          <PaginationComponent
+            page={getAllTasks.data.meta.page}
+            totalPages={getAllTasks.data.meta.totalPages}
+            onPageChange={setPage}
+          />
+        )}
       </div>
 
       <FloatingButton onClick={() => setIsModalOpen(true)} />

@@ -1,3 +1,4 @@
+import { IsIn } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -31,6 +32,7 @@ export class Task {
   description: string;
 
   @Column({ name: 'status' })
+  @IsIn(['ALL', 'TODO', 'IN_PROGRESS', 'REVIEW', 'DONE'])
   status: string;
 
   @Column({ name: 'priority' })

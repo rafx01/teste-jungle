@@ -21,4 +21,7 @@ export class SearchFilterDto {
   @IsOptional()
   @IsIn(['ALL', 'TODO', 'IN_PROGRESS', 'REVIEW', 'DONE'])
   orderByStatus?: string = 'createdAt';
+
+  @IsOptional()
+  title?: string;
 }

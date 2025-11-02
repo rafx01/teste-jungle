@@ -21,6 +21,7 @@ export class TasksController {
 
   @Get()
   async getAllTasks(@Query() query: SearchFilterDto) {
+    console.log('query', query);
     return await this.tasksService.getAllTasks(query);
   }
 

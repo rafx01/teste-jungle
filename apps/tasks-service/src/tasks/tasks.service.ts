@@ -7,7 +7,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { DeleteTaskByIdDto } from './dto/delete-task-by-id.dto';
 import { GetTaskByIdDto } from './dto/get-task-by-id.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-
+import { ILike } from 'typeorm';
 @Injectable()
 export class TasksService {
   constructor(
@@ -21,13 +21,17 @@ export class TasksService {
       limit = 10,
       order = 'DESC',
       orderByStatus = 'ALL',
+      title,
     } = filters;
 
     const skip = (page - 1) * limit;
-
     const [tasks, total] = await this.taskRepository.findAndCount({
+      where: {
+        status: orderByStatus === 'ALL' ? undefined : orderByStatus,
+        ...(title ? { title: ILike(`%${title}%`) } : {}),
+      },
       order: {
-        [orderByStatus]: order,
+        createdAt: order,
       },
       take: limit,
       skip: skip,
