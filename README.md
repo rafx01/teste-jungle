@@ -7,15 +7,19 @@
     # Na tela de login fiz a validação do formulário com Zod + React Hook Form, bem como utilizei componentes shadcn.
     # Finalizando (mais ou menos, sempre há coisas a se corrigir), voltei para a task de realizar a autenticação do usuário, no app auth-service, renomeei o controller, module e service do prefixo app para auth, criei a entity do user, instalei tudo que é necessário (bcrypt, passport etc.),
     # Na continuação, fui garantir que todas as rotas básicas do CRUD estavam funcionando, fui corrigindo o que precisava ser corrigido, e fazendo as interfaces necessárias, como modal de confirmação de exclusão de tarefa etc. Contudo percebi que ainda não havia feito os hooks e a lógica do accessToken e RefreshToken, peguei para fazer após terminar o CRUD básico. Parei para ver o vídeo do PhillCode (https://www.youtube.com/watch?v=ccFVOXJnfmo) para entender melhor o assunto.
+    # Terminei que não consegui implementar o refreshToken.
+
+    ## Pontos negativos/Débitos técnicos:
+    - Tive uma certa dificuldade com o nest, mas após se acostumar com o método de funcionamento dele, acabei pegando a ideia. Não consegui implementar o refreshToken, nem rabbitMQ nem Websocket, tanto por falta de tempo (não implicando que o tempo dado para o teste tenha sido pequeno), quanto de conhecimento. E também não consegui botar o docker-compose para funcionar corretamente. Portanto, para rodar o projeto é necessário iniciar cada microsserviço por vez (enviei o docker-compose simplificado, apenas com o banco e adminer).
+
+    ## Pontos positivos/funcionalidades implementadas
+    - Toda a parte do front-end foi bem tranquila, tudo o que eu já possuía experiência, zod, react-hook-form, shadcn etc. O que eu não possuía experiência ainda era o Tanstack Router, mas é bem simples de utilizar e gostei bastante. Também implementei o diferencial que era o React Query, que é outra tecnologia que já havia utilizado, gosto bastante pois tem como invalidar queries, fazer refetch, validações de loading/fetching e outros. Também conseguir implementar o API Gateway, e o JWT nas rotas. Também implementei a lógica dos comentários.
+
+    ## Executar o projeto
+    - Para executar o projeto, rodar o docker compose up para subir o banco e depois rodar o projeto web com `yarn dev --filter=web`, o auth service com `yarn dev --filter=web` e depois `yarn start:dev`, e fazer o mesmo com o task service.
 
 ![alt text](image.png)
 
 ![alt text](image-1.png)
 
-no docker compose, as portas das apis (sem ser do gateway) estão expostas
-
-para gerar migration:
-npx typeorm-ts-node-commonjs migration:generate ./src/migrations/migrationTwo -d ./src/config/typeorm.config.ts
-
-para rodar migration:
-npx typeorm-ts-node-commonjs migration:run -d ./src/config/typeorm.config.ts
+![alt text](image-2.png)
