@@ -18,6 +18,31 @@
     ## Executar o projeto
     - Para executar o projeto, rodar o docker compose up para subir o banco e depois rodar o projeto web com `yarn dev --filter=web`, o auth service com `yarn dev --filter=web` e depois `yarn start:dev`, e fazer o mesmo com o task service.
 
+    ## Env app web
+    VITE_TASKS_API_BASEURL=http://localhost:3003
+    VITE_AUTH_API_BASEURL=http://localhost:3002
+
+    # Env app task
+    DB_HOST=localhost
+    DB_PORT=5432
+    DB_USERNAME=postgres
+    DB_PASSWORD=postgres
+    DB_NAME=jungle
+    PORT=3003
+
+    # Env app auth
+    DB_HOST=localhost
+    DB_PORT=5432
+    DB_USERNAME=postgres
+    DB_PASSWORD=postgres
+    DB_DATABASE=jungle
+    JWT_SECRET=428147a203229fed
+    JWT_REFRESH_SECRET=4cd39f52ad17f68f
+
+    # Env app gateway
+    TASKS_SERVICE_URL='http://localhost:3003'
+    AUTH_SERVICE_URL='http://localhost:3002'
+
 ![alt text](image.png)
 
 ![alt text](image-1.png)
