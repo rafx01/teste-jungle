@@ -17,10 +17,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as Zod from "zod";
 import { usePostAddTask } from "@/hooks/task/useAddTask";
 import { BaseButton } from "../BaseButton/BaseButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import { createTaskSchema } from "@/schemas/createTaskSchema";
-
+import { useGetAllUsers } from "@/hooks/users/useGetAllUsers";
+import Select from "react-select";
 type AddTaskModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -30,6 +31,8 @@ export function AddTaskModal({ open, onOpenChange }: AddTaskModalProps) {
   const [loading, setLoading] = useState(false);
 
   const addTask = usePostAddTask();
+
+  const getAllUsers = useGetAllUsers();
 
   const {
     control,
@@ -58,7 +61,7 @@ export function AddTaskModal({ open, onOpenChange }: AddTaskModalProps) {
         users: data.users,
         status: data.status,
       });
-      toast.success("tarefa cadastrada com sucesso!", {
+      toast.success("Tarefa cadastrada com sucesso!", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -85,6 +88,10 @@ export function AddTaskModal({ open, onOpenChange }: AddTaskModalProps) {
       });
     }
   }
+
+  useEffect(() => {
+    getAllUsers.refetch();
+  }, [getAllUsers]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -182,15 +189,28 @@ export function AddTaskModal({ open, onOpenChange }: AddTaskModalProps) {
               render={({ field }) => (
                 <>
                   <Label htmlFor="users">Usuários </Label>
-                  <select
-                    {...field}
-                    id="users"
-                    name="users"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                  >
-                    <option value="rafx01">rafx01</option>
-                    <option value="rafx02">rafx02</option>
-                  </select>
+                  <Select
+                    isMulti
+                    options={getAllUsers.data?.map(
+                      (user: { id: any; name: any }) => ({
+                        value: user.id,
+                        label: user.name,
+                      })
+                    )}
+                    placeholder="Selecione os usuários"
+                    onChange={(selected) =>
+                      field.onChange(selected.map((s) => s.value))
+                    }
+                    value={getAllUsers.data
+                      ?.filter((u: { id: string }) =>
+                        field.value?.includes(u.id)
+                      )
+                      .map((u: { id: any; name: any }) => ({
+                        value: u.id,
+                        label: u.name,
+                      }))}
+                    className="text-sm border-gray-100 focus:border-gray-100"
+                  />
                 </>
               )}
             />

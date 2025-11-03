@@ -8,11 +8,15 @@ import { DeleteTaskByIdDto } from './dto/delete-task-by-id.dto';
 import { GetTaskByIdDto } from './dto/get-task-by-id.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { ILike } from 'typeorm';
+import { TaskAssignment } from 'src/entities/task-assignment.entity';
 @Injectable()
 export class TasksService {
   constructor(
     @InjectRepository(Task)
     private readonly taskRepository: Repository<Task>,
+
+    @InjectRepository(TaskAssignment)
+    private readonly taskAssignmentRepository: Repository<TaskAssignment>,
   ) {}
 
   async getAllTasks(filters: SearchFilterDto) {
@@ -49,7 +53,10 @@ export class TasksService {
   }
 
   async getTaskById(getTaskByIdDto: GetTaskByIdDto) {
-    const task = await this.taskRepository.findOneBy({ id: getTaskByIdDto.id });
+    const task = await this.taskRepository.findOne({
+      where: { id: getTaskByIdDto.id },
+      relations: ['assignments'],
+    });
 
     return task;
   }
@@ -58,22 +65,42 @@ export class TasksService {
     return await this.taskRepository.delete(deleteTaskByIdDto.id);
   }
 
-  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    const newTask = this.taskRepository.create(createTaskDto);
-    return await this.taskRepository.save(newTask);
+  async createTask(dto: CreateTaskDto) {
+    const task = this.taskRepository.create({
+      title: dto.title,
+      description: dto.description,
+      priority: dto.priority,
+      status: dto.status,
+      dueDate: new Date(dto.dueDate),
+    });
+
+    const savedTask = await this.taskRepository.save(task);
+
+    if (dto.users?.length) {
+      const assignments = dto.users.map((userId) =>
+        this.taskAssignmentRepository.create({
+          task_id: savedTask.id,
+          user_id: userId,
+        }),
+      );
+
+      await this.taskAssignmentRepository.save(assignments);
+    }
+
+    return savedTask;
   }
 
-  // async updateTask(updateTaskDto: UpdateTaskDto, id: string) {
-  //   this.taskRepository.update(id, updateTaskDto);
+  async updateTask(updateTaskDto: UpdateTaskDto, id: string) {
+    this.taskRepository.update(id, updateTaskDto);
 
-  //   return await this.taskRepository.save({
-  //     id,
-  //     title: updateTaskDto.title,
-  //     description: updateTaskDto.description,
-  //     dueDate: updateTaskDto.dueDate,
-  //     priority: updateTaskDto.priority,
-  //     status: updateTaskDto.status,
-  //     users: updateTaskDto.users,
-  //   });
-  // }
+    return await this.taskRepository.save({
+      id,
+      title: updateTaskDto.title,
+      description: updateTaskDto.description,
+      dueDate: updateTaskDto.dueDate,
+      priority: updateTaskDto.priority,
+      status: updateTaskDto.status,
+      //users: updateTaskDto.users,
+    });
+  }
 }

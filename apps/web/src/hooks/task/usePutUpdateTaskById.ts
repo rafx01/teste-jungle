@@ -8,7 +8,7 @@ type props = {
   dueDate: Date;
   priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
   status: "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE";
-  users: string[];
+  //users: string[];
 };
 
 export function usePutUpdateTaskById() {
@@ -20,18 +20,18 @@ export function usePutUpdateTaskById() {
       priority,
       status,
       title,
-      users,
+      //users,
       taskId,
     }: props) => {
       const { data } = await axios.put(
-        `${import.meta.env.VITE_TASKS_API_BASEURL}/api/tasks/${taskId}`,
+        `${import.meta.env.VITE_TASKS_API_BASEURL}/tasks/${taskId}`,
         {
           description,
           dueDate,
           priority,
           status,
           title,
-          users,
+          //users,
         }
       );
       return data;

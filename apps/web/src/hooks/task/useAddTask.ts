@@ -23,7 +23,7 @@ export function usePostAddTask() {
       users,
     }: props) => {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_TASKS_API_BASEURL}/api/tasks`,
+        `${import.meta.env.VITE_TASKS_API_BASEURL}/tasks`,
         {
           description,
           dueDate,

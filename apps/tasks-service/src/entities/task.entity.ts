@@ -4,9 +4,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { TaskAssignment } from './task-assignment.entity';
 
 @Entity({ name: 'task' })
 export class Task {
@@ -25,9 +27,6 @@ export class Task {
   @Column({ name: 'title' })
   title: string;
 
-  // @Column({ name: 'users' })
-  // users: string;
-
   @Column({ name: 'description' })
   description: string;
 
@@ -40,4 +39,9 @@ export class Task {
 
   @Column({ name: 'due_date' })
   dueDate: Date;
+
+  @OneToMany(() => TaskAssignment, (assignment) => assignment.task, {
+    cascade: true,
+  })
+  assignments: TaskAssignment[];
 }

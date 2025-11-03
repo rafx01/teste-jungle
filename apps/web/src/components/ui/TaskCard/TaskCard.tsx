@@ -72,6 +72,8 @@ export function TaskCard({
     ? new Date(dueDate).toLocaleDateString("pt-BR")
     : "Sem data";
 
+  console.log("users:::::", users);
+
   return (
     <div
       onClick={onClick}

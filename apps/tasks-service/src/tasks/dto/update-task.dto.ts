@@ -4,6 +4,7 @@ import {
   IsDateString,
   IsIn,
   IsArray,
+  IsOptional,
 } from 'class-validator';
 
 export class UpdateTaskDto {
@@ -25,7 +26,7 @@ export class UpdateTaskDto {
 
   @IsArray()
   @IsString({ each: true })
-  @IsNotEmpty()
+  @IsOptional()
   users: string[];
 
   @IsIn(['TODO', 'IN_PROGRESS', 'REVIEW', 'DONE'])

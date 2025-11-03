@@ -1,4 +1,3 @@
-// src/users/users.service.ts
 import {
   Injectable,
   ConflictException,
@@ -50,8 +49,6 @@ export class UsersService {
   }
 
   async findAll(): Promise<UserEntity[]> {
-    return this.usersRepository.find({
-      select: ['id', 'email', 'nick', 'createdAt'],
-    });
+    return this.usersRepository.find();
   }
 }

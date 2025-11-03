@@ -21,7 +21,6 @@ export class TasksController {
 
   @Get()
   async getAllTasks(@Query() query: SearchFilterDto) {
-    console.log('query', query);
     return await this.tasksService.getAllTasks(query);
   }
 
@@ -44,8 +43,8 @@ export class TasksController {
     return this.tasksService.createTask(createTaskDto);
   }
 
-  // @Put(':id')
-  // updateTask(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-  //   return this.tasksService.updateTask(updateTaskDto, id);
-  // }
+  @Put(':id')
+  updateTask(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+    return this.tasksService.updateTask(updateTaskDto, id);
+  }
 }

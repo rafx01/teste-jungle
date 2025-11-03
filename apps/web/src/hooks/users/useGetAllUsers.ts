@@ -1,15 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export function useGetTaskById({ taskId }: { taskId: string | null }) {
+export function useGetAllUsers() {
   return useQuery({
-    queryKey: ["getTaskById", taskId],
+    queryKey: ["getAllUsers"],
     queryFn: async () => {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_TASKS_API_BASEURL}/tasks/${taskId}`
+        `${import.meta.env.VITE_AUTH_API_BASEURL}/users`
       );
       return data;
     },
-    enabled: !!taskId,
   });
 }

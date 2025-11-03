@@ -6,7 +6,10 @@ import {
   Unique,
   UpdateDateColumn,
   DeleteDateColumn,
+  ManyToOne,
 } from 'typeorm';
+import { Task } from './task.entity';
+import { JoinColumn } from 'typeorm';
 
 @Entity('task_assignments')
 @Unique(['task_id', 'user_id'])
@@ -31,4 +34,8 @@ export class TaskAssignment {
 
   @CreateDateColumn()
   assigned_at: Date;
+
+  @ManyToOne(() => Task, (task) => task.assignments, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'task_id' })
+  task: Task;
 }

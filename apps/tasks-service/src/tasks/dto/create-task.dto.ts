@@ -4,6 +4,7 @@ import {
   IsDateString,
   IsIn,
   IsArray,
+  IsUUID,
 } from 'class-validator';
 
 export class CreateTaskDto {
@@ -24,8 +25,7 @@ export class CreateTaskDto {
   priority: string;
 
   @IsArray()
-  @IsString({ each: true })
-  @IsNotEmpty()
+  @IsUUID('4', { each: true })
   users: string[];
 
   @IsIn(['TODO', 'IN_PROGRESS', 'REVIEW', 'DONE'])
