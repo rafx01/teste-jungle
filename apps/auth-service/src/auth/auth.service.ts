@@ -11,22 +11,30 @@ export class AuthService {
   ) {}
 
   async login(user: any) {
-    const payload = { sub: user.id, email: user.email };
+    // garantir que o usuário está completo (por exemplo, se veio do validateUser)
+    const fullUser = await this.usersService.findByEmail(user.email);
+
+    if (!fullUser) {
+      throw new UnauthorizedException('Usuário não encontrado');
+    }
+
+    const payload = { sub: fullUser.id, email: fullUser.email };
+
     return {
       access_token: this.jwtService.sign(payload),
       user: {
-        id: user.id,
-        email: user.email,
-        nick: user.nick,
-        name: user.name,
+        id: fullUser.id,
+        email: fullUser.email,
+        nick: fullUser.nick,
+        name: fullUser.name,
       },
     };
   }
 
   async register(email: string, password: string, name: string, nick: string) {
     const user = await this.usersService.create(email, password, name, nick);
-    const { password: _, ...userWithoutPassword } = user;
-    return this.login(userWithoutPassword);
+
+    return this.login(user); // agora o user tem id e email
   }
 
   async validateUser(email: string, password: string): Promise<any> {

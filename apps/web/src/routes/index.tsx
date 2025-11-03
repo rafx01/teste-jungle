@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import { BaseInput } from "@/components/ui/BaseInput/BaseInput";
 import { BaseButton } from "@/components/ui/BaseButton/BaseButton";
+import { useUserStore } from "@/stores/userStore";
 
 export const Route = createFileRoute("/")({
   component: LoginPage,
@@ -30,18 +31,20 @@ function LoginPage() {
 
   const navigate = useNavigate();
 
+  const { setUserId } = useUserStore();
+
   const postLogin = usePostLogin();
 
   async function handleLogin(data: Zod.infer<typeof loginSchema>) {
     try {
       setIsLoading(true);
-      console.log(1);
 
       const response = await postLogin.mutateAsync({
         email: data.email,
         password: data.password,
       });
-      console.log(response);
+
+      setUserId(response.user.id);
 
       navigate({ to: "/homepage" });
 

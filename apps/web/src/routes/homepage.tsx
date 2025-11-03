@@ -48,8 +48,6 @@ function HomePage() {
     page: page,
   });
 
-  console.log(getAllTasks.data);
-
   const { openTaskModal } = useTaskStore();
 
   const isDataEmpty = getAllTasks.data?.length === 0;

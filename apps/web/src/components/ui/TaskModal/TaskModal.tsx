@@ -12,7 +12,7 @@ import { statusLabel } from "@/utils/statusLabel";
 import { SkeletonCard } from "../SkeletonCard/SkeletonCard";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { AlertModal } from "../AlertModal/AlertModal";
-import { useState } from "react";
+import { useState, type Key } from "react";
 import { BaseTextArea } from "../BaseTextArea/BaseTextArea";
 import { IoIosSend } from "react-icons/io";
 import { usePutUpdateTaskById } from "@/hooks/task/usePutUpdateTaskById";
@@ -21,7 +21,6 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateTaskSchema } from "@/schemas/updateTaskSchema";
 import * as Zod from "zod";
-import Select from "react-select";
 import { FaPen } from "react-icons/fa";
 import {
   FcHighPriority,
@@ -32,14 +31,26 @@ import { BaseInput } from "../BaseInput/BaseInput";
 import { useGetAllUsers } from "@/hooks/users/useGetAllUsers";
 import { BaseButton } from "../BaseButton/BaseButton";
 import { Input } from "@/shadcn/ui/input";
+import { Comment } from "../Comment/Comment";
+import { useGetTaskComments } from "@/hooks/comments/useGetTaskComments";
+import { usePostComment } from "@/hooks/comments/usePostComment";
+import { useUserStore } from "@/stores/userStore";
 
 export function TaskModal() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { selectedTaskId, isViewModalOpen, closeTaskModal } = useTaskStore();
+  const { userId } = useUserStore();
+  const [commentText, setCommentText] = useState("");
 
   const getAllUsers = useGetAllUsers();
+
+  const getTaskComments = useGetTaskComments({
+    taskId: selectedTaskId,
+  });
+
+  const postComment = usePostComment();
 
   const getTaskById = useGetTaskById({
     taskId: selectedTaskId,
@@ -111,7 +122,15 @@ export function TaskModal() {
 
   async function handleComment() {
     try {
-    } catch (error) {}
+      await postComment.mutateAsync({
+        taskId: selectedTaskId!,
+        text: commentText,
+        userId: userId,
+      });
+      (setCommentText(""), getTaskComments.refetch());
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   let priorityIcon = null;
@@ -282,16 +301,31 @@ export function TaskModal() {
 
               <div>
                 <h3 className="font-semibold mb-2">Usuários Atribuídos</h3>
-
+                {getTaskById.data?.assignments.length === 0 && (
+                  <p className="text-gray-700 text-sm">
+                    Nenhum usuário atribuído
+                  </p>
+                )}
                 <div className="flex flex-wrap gap-2">
-                  {getTaskById?.data?.assignments.map((assignment) => (
-                    <span
-                      className="px-3 py-1 rounded-full text-sm font-medium"
-                      key={assignment.id}
-                    >
-                      {assignment.id}
-                    </span>
-                  ))}
+                  {getTaskById?.data?.assignments.map(
+                    (assignment: {
+                      user_id: any;
+                      id: Key | null | undefined;
+                    }) => {
+                      const assignedUser = getAllUsers.data?.find(
+                        (user: { id: any }) => user.id === assignment.user_id
+                      );
+
+                      return (
+                        <span
+                          className="px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-medium"
+                          key={assignment.id}
+                        >
+                          {assignedUser?.name}
+                        </span>
+                      );
+                    }
+                  )}
                 </div>
               </div>
               {editing ? (
@@ -299,10 +333,29 @@ export function TaskModal() {
               ) : (
                 <>
                   <div className="border border-t border-slate-200" />
-                  <div className="bg-red-100 w-full h-10">//coments</div>
-                  <BaseTextArea placeholder="Escreva seu comentário..." />
+
+                  {getTaskComments?.data?.map(
+                    (comment: { text: string; userId: string }) => (
+                      <Comment
+                        text={comment.text}
+                        user={
+                          getAllUsers?.data?.find(
+                            (user: { id: string }) => user.id === comment.userId
+                          )?.name
+                        }
+                      />
+                    )
+                  )}
+                  <BaseTextArea
+                    onChange={(e) => setCommentText(e.target.value)}
+                    value={commentText}
+                    placeholder="Escreva seu comentário..."
+                  />
                   <div className=" flex justify-end">
-                    <div className="h-7 w-7  border cursor-pointer border-slate-300 rounded-sm items-center justify-center flex ">
+                    <div
+                      onClick={() => handleComment()}
+                      className="h-7 w-7  border cursor-pointer border-slate-300 rounded-sm items-center justify-center flex "
+                    >
                       <IoIosSend />
                     </div>
                   </div>
